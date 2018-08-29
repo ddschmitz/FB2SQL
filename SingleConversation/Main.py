@@ -116,6 +116,17 @@ def main():
         # Insert the reactions the message had.
         if "reactions" in message:
             for reaction in message["reactions"]:
+                if reaction["actor"] not in myPpl: # Not sure if peoples' reactions stay after they leave the group.  Reguardless, someone can react but not be in the Participant table.
+                    sql = ("""
+                    INSERT INTO Participant 
+                        (Name) 
+                    VALUES 
+                        (%(Name)s)""")
+                    params = {'Name' : reaction["actor"]}
+                    cursor.execute(sql, params)
+                    cnx.commit()
+                    myPpl[reaction["actor"]] = cursor.lastrowid
+
                 sql = ("""
                 INSERT INTO Reaction 
                     (MessageID, Actor, Reaction) 
