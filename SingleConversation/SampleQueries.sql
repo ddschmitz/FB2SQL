@@ -3,6 +3,7 @@ Select DISTINCT P.Name, COUNT(*)
 FROM Message AS M
 INNER JOIN Participant AS P ON M.SenderID = P.ID
 GROUP BY M.SenderID
+ORDER BY COUNT(*)
 
 # Last thing a person said
 SELECT P.Name, M.Timestamp, M.Content
